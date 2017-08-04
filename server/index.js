@@ -4,7 +4,18 @@ const express = require('express');
 const app = express();
 
 // API endpoints go here!
+app.get('/api/todos', (req, res) => {
+  const todos = [
+    {
+      text: 'todo1'
+    },
+    {
+      text: 'todo2'
+    }
+  ]
 
+  res.json(todos)
+})
 
 // Serve the built client
 app.use(express.static(path.resolve(__dirname, '../client/build')));

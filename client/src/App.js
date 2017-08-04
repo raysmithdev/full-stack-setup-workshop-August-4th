@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux'
+import { fetchTodos } from './actions'
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.dispatch(fetchTodos())
+  }
+
   render() {
     return (
       <div className="App">
@@ -10,12 +17,23 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {this.props.loading ?
+          <p>Loading....</p>
+          :
+          <ul>
+            {this.props.todos.map((todo, index) => (
+              <li key={index}>{todo.text}</li>
+            ))}
+          </ul>
+        }
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  todos: state.todos.data,
+  loading: state.todos.loading
+})
+
+export default connect(mapStateToProps)(App);
